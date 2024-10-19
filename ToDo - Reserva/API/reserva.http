@@ -1,0 +1,21 @@
+### Testar a raiz do projeto 
+GET http://localhost:5272
+
+### Cadastrar uma reserva
+POST http://localhost:5272/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "ReservaId": 2,
+    "CPF": "99988877766",
+    "NomeCompleto": "Bropilismo",
+    "Placa": "BROP42",
+    "Modelo": "Onix"
+}
+
+
+### Listar todas as reservas
+GET http://localhost:5272/api/reserva/listar
+
+### Cancelar uma reserva pelo ReservaId
+DELETE http://localhost:5272/api/reserva/cancelar/1

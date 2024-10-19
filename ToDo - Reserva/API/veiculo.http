@@ -1,0 +1,34 @@
+### Testar a raiz do projeto 
+GET http://localhost:5272
+
+### Cadastrar um veiculo
+POST http://localhost:5272/api/veiculo/cadastrar
+Content-Type: application/json
+
+{
+    "Placa": "BROP42",
+    "Modelo": "Onix",
+    "Marca": "Chevrolet",
+    "Ano": "2019",
+    "Disponivel": "SIM"
+    
+}
+
+### Alterar informações de um usuário (por Placa)
+PUT http://localhost:5272/api/veiculo/alterar/GUM2017
+Content-Type: application/json
+
+{
+    "Modelo": "Monster",
+    "Marca": "Citroen",
+    "Ano": "2005"
+}
+
+### Listar todos os usuários
+GET http://localhost:5272/api/veiculo/listar
+
+### Buscar um veiculo pelo Placa
+GET http://localhost:5272/api/veiculo/buscar/GUM2017
+
+### Deletar um veiculo pelo Placa
+DELETE http://localhost:5272/api/veiculo/deletar/BBB777

@@ -7,6 +7,8 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Projeto API_LocalizaV2!");
 
+//////////////////////// CADASTRO DE USUÁRIOS /////////////////////////
+
 app.MapPost("/api/usuario/cadastrar", ([FromBody] Usuario usuario,  
     [FromServices] AppDataContext ctx) =>
 {
@@ -14,6 +16,8 @@ app.MapPost("/api/usuario/cadastrar", ([FromBody] Usuario usuario,
     ctx.SaveChanges();
     return Results.Created("", usuario);
 }); 
+
+//////////////////////// CADASTRO DE VEÍCULOS /////////////////////////
 
 app.MapPost("/api/veiculo/cadastrar", ([FromBody] Veiculo veiculo,  
     [FromServices] AppDataContext ctx) =>
@@ -23,7 +27,24 @@ app.MapPost("/api/veiculo/cadastrar", ([FromBody] Veiculo veiculo,
     return Results.Created("", veiculo);
 }); 
 
- //////////////////////// DIVISÃO CADASTRO /////////////////////////
+//////////////////////// CADASTRO DE RESERVAS /////////////////////////
+
+app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,  
+    [FromServices] AppDataContext ctx) =>
+{
+    var veiculo = ctx.Veiculos.Find(reserva.Placa);
+    if (veiculo is null || veiculo.Disponivel == "NÃO")
+    {
+        return Results.BadRequest("Veículo não disponível para reserva.");
+    }
+
+    ctx.Reservas.Add(reserva);
+    veiculo.Disponivel = "NÃO"; // Atualiza o status do veículo para NÃO disponível
+    ctx.SaveChanges();
+    return Results.Created("", reserva);
+}); 
+
+//////////////////////// BUSCAR USUÁRIO /////////////////////////
 
 app.MapGet("/api/usuario/buscar/{cpf}", ([FromRoute] string cpf,  
     [FromServices] AppDataContext ctx) =>
@@ -36,6 +57,8 @@ app.MapGet("/api/usuario/buscar/{cpf}", ([FromRoute] string cpf,
     return Results.Ok(usuario);
 }); 
 
+//////////////////////// BUSCAR VEÍCULO /////////////////////////
+
 app.MapGet("/api/veiculo/buscar/{placa}", ([FromRoute] string placa,  
     [FromServices] AppDataContext ctx) =>
 {
@@ -47,8 +70,7 @@ app.MapGet("/api/veiculo/buscar/{placa}", ([FromRoute] string placa,
     return Results.Ok(veiculo);
 }); 
 
-//////////////////////// DIVISÃO BUSCAR /////////////////////////
-
+//////////////////////// LISTAR USUÁRIOS /////////////////////////
 
 app.MapGet("/api/usuario/listar", ([FromServices] AppDataContext ctx) =>
 {
@@ -59,6 +81,8 @@ app.MapGet("/api/usuario/listar", ([FromServices] AppDataContext ctx) =>
     return Results.NotFound();
 }); 
 
+//////////////////////// LISTAR VEÍCULOS /////////////////////////
+
 app.MapGet("/api/veiculo/listar", ([FromServices] AppDataContext ctx) =>
 {
     if(ctx.Veiculos.Any())
@@ -68,7 +92,41 @@ app.MapGet("/api/veiculo/listar", ([FromServices] AppDataContext ctx) =>
     return Results.NotFound();
 }); 
 
-//////////////////////// DIVISÃO LISTAR /////////////////////////
+//////////////////////// LISTAR RESERVAS /////////////////////////
+
+app.MapGet("/api/reserva/listar", ([FromServices] AppDataContext ctx) =>
+{
+    if(ctx.Reservas.Any())
+    {
+        return Results.Ok(ctx.Reservas.ToList());
+    }
+    return Results.NotFound();
+}); 
+
+//////////////////////// CANCELAR RESERVA /////////////////////////
+
+app.MapDelete("/api/reserva/cancelar/{reservaId}", ([FromRoute] int reservaId,  
+    [FromServices] AppDataContext ctx) =>
+{
+    Reserva? reserva = ctx.Reservas.Find(reservaId);
+    if(reserva is null)
+    {
+        return Results.NotFound();
+    }
+    
+    // Atualiza o veículo para disponível
+    var veiculo = ctx.Veiculos.Find(reserva.Placa);
+    if (veiculo != null)
+    {
+        veiculo.Disponivel = "SIM"; // Altera a disponibilidade do veículo
+    }
+
+    ctx.Reservas.Remove(reserva);
+    ctx.SaveChanges();
+    return Results.Ok(reserva);
+}); 
+
+//////////////////////// DELETAR USUÁRIO /////////////////////////
 
 app.MapDelete("/api/usuario/deletar/{cpf}", ([FromRoute] string cpf,  
     [FromServices] AppDataContext ctx) =>
@@ -83,6 +141,8 @@ app.MapDelete("/api/usuario/deletar/{cpf}", ([FromRoute] string cpf,
     return Results.Ok(usuario);
 }); 
 
+//////////////////////// DELETAR VEÍCULO /////////////////////////
+
 app.MapDelete("/api/veiculo/deletar/{placa}", ([FromRoute] string placa,  
     [FromServices] AppDataContext ctx) =>
 {
@@ -96,9 +156,7 @@ app.MapDelete("/api/veiculo/deletar/{placa}", ([FromRoute] string placa,
     return Results.Ok(veiculo);
 }); 
 
-
-//////////////////////// DIVISÃO DELETAR /////////////////////////
-
+//////////////////////// ALTERAR USUÁRIO /////////////////////////
 
 app.MapPut("/api/usuario/alterar/{cpf}", ([FromRoute] string cpf, 
     [FromBody] Usuario usuarioAlterado,  
@@ -118,6 +176,8 @@ app.MapPut("/api/usuario/alterar/{cpf}", ([FromRoute] string cpf,
     ctx.SaveChanges();
     return Results.Ok(usuario);
 }); 
+
+//////////////////////// ALTERAR VEÍCULO /////////////////////////
 
 app.MapPut("/api/veiculo/alterar/{placa}", ([FromRoute] string placa, 
     [FromBody] Veiculo veiculoAlterado,  

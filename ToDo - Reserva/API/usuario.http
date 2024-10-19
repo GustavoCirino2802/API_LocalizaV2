@@ -1,0 +1,34 @@
+### Testar a raiz do projeto 
+GET http://localhost:5272
+
+### Cadastrar um usuário
+POST http://localhost:5272/api/usuario/cadastrar
+Content-Type: application/json
+
+{
+    "CPF": "99988877766",
+    "NomeCompleto": "Bropilismo ",
+    "Celular": "4199045555",
+    "Email": "bropilismo.bruno@email.com",
+    "Senha": "bropBruno44"
+}
+
+### Alterar informações de um usuário (por CPF)
+PUT http://localhost:5272/api/usuario/alterar/13110449900
+Content-Type: application/json
+
+{
+    "NomeCompleto": "Gu Monster",
+    "Celular": "4199049872",
+    "Email": "gustavo.monster@email.com",
+    "Senha": "guMonster"
+}
+
+### Listar todos os usuários
+GET http://localhost:5272/api/usuario/listar
+
+### Buscar um usuário pelo CPF
+GET http://localhost:5272/api/usuario/buscar/13110449900
+
+### Deletar um usuário pelo CPF
+DELETE http://localhost:5272/api/usuario/deletar/111111111111

@@ -17,30 +17,37 @@ namespace API.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
-            modelBuilder.Entity("API.Models.Veiculo", b =>
+            modelBuilder.Entity("API.Models.Reserva", b =>
                 {
-                    b.Property<string>("Placa")
+                    b.Property<int>("ReservaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CPF")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Ano")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Marca")
+                    b.Property<DateTime>("DataReserva")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Modelo")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Placa");
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("Veiculos");
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReservaId");
+
+                    b.ToTable("Reservas");
                 });
 
-            modelBuilder.Entity("Usuario", b =>
+            modelBuilder.Entity("API.Models.Usuario", b =>
                 {
                     b.Property<string>("CPF")
                         .HasColumnType("TEXT");
@@ -65,6 +72,32 @@ namespace API.Migrations
                     b.HasKey("CPF");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("API.Models.Veiculo", b =>
+                {
+                    b.Property<string>("Placa")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ano")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Disponivel")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Marca")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Modelo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Placa");
+
+                    b.ToTable("Veiculos");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
+namespace API.Models;
+
 public class Usuario
 {
     [Key]
