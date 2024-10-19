@@ -6,22 +6,22 @@ POST http://localhost:5272/api/usuario/cadastrar
 Content-Type: application/json
 
 {
-    "CPF": "11111111111",
-    "NomeCompleto": "João Silva",
-    "Celular": "11999999999",
-    "Email": "joao.silva@email.com",
-    "Senha": "senhaSegura123"
+    "CPF": "1135792468",
+    "NomeCompleto": "Giselle Marry",
+    "Celular": "41991196728",
+    "Email": "giselle.marry@email.com",
+    "Senha": "gi777666"
 }
 
 ### Alterar informações de um usuário (por CPF)
-PUT http://localhost:5272/api/usuario/alterar/01987654321
+PUT http://localhost:5272/api/usuario/alterar/1135792468
 Content-Type: application/json
 
 {
-    "NomeCompleto": "João Silva NOVO",
+    "NomeCompleto": "Gi Marry NOVO",
     "Celular": "11888888888",
-    "Email": "joao.silva@novodominio.com",
-    "Senha": "novaSenhaSegura123"
+    "Email": "gi.marry@novodominio.com",
+    "Senha": "novaSenha777666"
 }
 
 ### Listar todos os usuários
