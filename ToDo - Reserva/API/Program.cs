@@ -27,15 +27,30 @@ app.MapPost("/api/veiculo/cadastrar", ([FromBody] Veiculo veiculo,
     return Results.Created("", veiculo);
 }); 
 
+
 //////////////////////// CADASTRO DE RESERVAS /////////////////////////
 
 app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,  
     [FromServices] AppDataContext ctx) =>
 {
+    // Verifica se o veículo existe
     var veiculo = ctx.Veiculos.Find(reserva.Placa);
-    if (veiculo is null || veiculo.Disponivel == "NÃO")
+    if (veiculo is null)
+    {
+        return Results.BadRequest("Veículo não existe.");
+    }
+    
+    // Verifica se o veículo está disponível
+    if (veiculo.Disponivel == "NÃO")
     {
         return Results.BadRequest("Veículo não disponível para reserva.");
+    }
+
+    // Verifica se o usuário existe
+    var usuario = ctx.Usuarios.Find(reserva.CPF); // Supondo que você está usando CPF como identificador
+    if (usuario is null)
+    {
+        return Results.BadRequest("Usuário não existe.");
     }
 
     ctx.Reservas.Add(reserva);
@@ -43,6 +58,7 @@ app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,
     ctx.SaveChanges();
     return Results.Created("", reserva);
 }); 
+
 
 //////////////////////// BUSCAR USUÁRIO /////////////////////////
 
