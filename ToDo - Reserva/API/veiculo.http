@@ -14,7 +14,7 @@ Content-Type: application/json
     
 }
 
-### Alterar informações de um usuário (por Placa)
+### Alterar informações de um veiculo (por Placa)
 PUT http://localhost:5272/api/veiculo/alterar/GUM2017
 Content-Type: application/json
 
@@ -24,7 +24,7 @@ Content-Type: application/json
     "Ano": "2005"
 }
 
-### Listar todos os usuários
+### Listar todos os veiculos
 GET http://localhost:5272/api/veiculo/listar
 
 ### Buscar um veiculo pelo Placa

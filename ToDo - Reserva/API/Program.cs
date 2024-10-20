@@ -102,6 +102,19 @@ app.MapGet("/api/reserva/listar", ([FromServices] AppDataContext ctx) =>
     }
     return Results.NotFound();
 }); 
+//////////////////////// LISTAR VEÍCULOS DISPONÍVEIS /////////////////////////
+
+app.MapGet("/api/veiculo/listardisponiveis", ([FromServices] AppDataContext ctx) =>
+{
+    var veiculosDisponiveis = ctx.Veiculos.Where(v => v.Disponivel == "SIM").ToList();
+    
+    if (veiculosDisponiveis.Any())
+    {
+        return Results.Ok(veiculosDisponiveis);
+    }
+    return Results.NotFound("Nenhum veículo disponível para reserva.");
+});
+
 
 //////////////////////// CANCELAR RESERVA /////////////////////////
 
