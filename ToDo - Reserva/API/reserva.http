@@ -7,14 +7,14 @@ Content-Type: application/json
 
 {
     "ReservaId": 1,
-    "CPF": "1135792468",
-    "NomeCompleto": "Gi Marry NOVO",
+    "CPF": "99988877766",
     "Placa": "GUM2017",
-    "Modelo": "Citroen"
+    "PeriodoInicial": "2024-10-01",
+    "PeriodoFinal":  "2024-10-15"
 }
 
 ### Listar todos os veiculos disponiveis 
-GET http://localhost:5272/api/veiculo/listardisponiveis
+GET http://localhost:5272/api/veiculo/listarDisponiveis
 
 ### Listar todas as reservas
 GET http://localhost:5272/api/reserva/listar

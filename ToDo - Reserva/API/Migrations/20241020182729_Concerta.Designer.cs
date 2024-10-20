@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20241020113738_listardisponiveis")]
-    partial class listardisponiveis
+    [Migration("20241020182729_Concerta")]
+    partial class Concerta
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,10 @@ namespace API.Migrations
                     b.Property<DateTime>("DataReserva")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Modelo")
-                        .IsRequired()
+                    b.Property<DateTime>("PeriodoFinal")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NomeCompleto")
-                        .IsRequired()
+                    b.Property<DateTime>("PeriodoInicial")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Placa")
