@@ -7,8 +7,8 @@ Content-Type: application/json
 
 {
     "ReservaId": 1,
-    "CPF": "99988877766",
-    "Placa": "GUM2017",
+    "CPF": "12345678",
+    "Placa": "ABC123",
     "PeriodoInicial": "2024-10-01",
     "PeriodoFinal":  "2024-10-15"
 }

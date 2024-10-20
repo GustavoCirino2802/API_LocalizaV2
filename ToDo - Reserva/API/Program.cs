@@ -13,28 +13,26 @@ app.MapGet("/", () => "Projeto API_LocalizaV2!");
 app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,  
     [FromServices] AppDataContext ctx) =>
 {
-    // Verifica se o veículo existe
     var veiculo = ctx.Veiculos.Find(reserva.Placa);
     if (veiculo is null)
     {
         return Results.BadRequest("Veículo não existe.");
     }
     
-    // Verifica se o veículo está disponível
     if (veiculo.Disponivel == "NÃO")
     {
         return Results.BadRequest("Veículo não disponível para reserva.");
     }
 
     // Verifica se o usuário existe
-    var usuario = ctx.Usuarios.Find(reserva.CPF); // Supondo que você está usando CPF como identificador
+    var usuario = ctx.Usuarios.Find(reserva.CPF); 
     if (usuario is null)
     {
         return Results.BadRequest("Usuário não existe.");
     }
 
     ctx.Reservas.Add(reserva);
-    veiculo.Disponivel = "NÃO"; // Atualiza o status do veículo para NÃO disponível
+    veiculo.Disponivel = "NÃO"; 
     ctx.SaveChanges();
     return Results.Created("", reserva);
 }); 
@@ -61,11 +59,10 @@ app.MapDelete("/api/reserva/cancelar/{reservaId}", ([FromRoute] int reservaId,
         return Results.NotFound();
     }
     
-    // Atualiza o veículo para disponível
     var veiculo = ctx.Veiculos.Find(reserva.Placa);
     if (veiculo != null)
     {
-        veiculo.Disponivel = "SIM"; // Altera a disponibilidade do veículo
+        veiculo.Disponivel = "SIM"; 
     }
 
     ctx.Reservas.Remove(reserva);

@@ -6,29 +6,30 @@ POST http://localhost:5272/api/veiculo/cadastrar
 Content-Type: application/json
 
 {
-    "Placa": "Teste",
-    "Modelo": "Teste",
-    "Marca": "Teste",
-    "Ano": "Teste",
+    "Placa": "ABC123",
+    "Modelo": "Onix",
+    "Marca": "Chevrolet",
+    "Ano": "2020",
     "Disponivel": "SIM"
     
 }
 
 ### Alterar informações de um veiculo (por Placa)
-PUT http://localhost:5272/api/veiculo/alterar/Teste
+PUT http://localhost:5272/api/veiculo/alterar/ABC123
 Content-Type: application/json
 
 {
-    "Modelo": "TesteV2",
-    "Marca": "Teste",
-    "Ano": "Teste"
+    "Modelo": "Cruze",
+    "Marca": "Chevrolet",
+    "Ano": "2024"
 }
 
 ### Listar todos os veiculos
 GET http://localhost:5272/api/veiculo/listarTudo
 
 ### Buscar um veiculo pelo Placa
-GET http://localhost:5272/api/veiculo/buscar/Teste
+GET http://localhost:5272/api/veiculo/buscar/ABC123
 
 ### Deletar um veiculo pelo Placa
-DELETE http://localhost:5272/api/veiculo/deletar/GUM2017
+DELETE http://localhost:5272/api/veiculo/deletar/ABC123
+

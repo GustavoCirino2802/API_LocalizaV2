@@ -6,29 +6,29 @@ POST http://localhost:5272/api/usuario/cadastrar
 Content-Type: application/json
 
 {
-    "CPF": "Teste",
-    "NomeCompleto": "Teste ",
-    "Celular": "Teste",
-    "Email": "Teste",
-    "Senha": "Teste"
+    "CPF": "12345678",
+    "NomeCompleto": "Diogo Deconto ",
+    "Celular": "41997974141",
+    "Email": "diogo.deconto@email.com",
+    "Senha": "123456"
 }
 
 ### Alterar informações de um usuário (por CPF)
-PUT http://localhost:5272/api/usuario/alterar/Teste
+PUT http://localhost:5272/api/usuario/alterar/12345678
 Content-Type: application/json
 
 {
-    "NomeCompleto": "TesteV2",
-    "Celular": "TesteV2",
-    "Email": "TesteV2",
-    "Senha": "TesteV2"
+    "NomeCompleto": "Gustavo",
+    "Celular": "Teste",
+    "Email": "Teste",
+    "Senha": "Teste"
 }
 
 ### Listar todos os usuários
 GET http://localhost:5272/api/usuario/listar
 
 ### Buscar um usuário pelo CPF
-GET http://localhost:5272/api/usuario/buscar/13110449900
+GET http://localhost:5272/api/usuario/buscar/12345678
 
 ### Deletar um usuário pelo CPF
-DELETE http://localhost:5272/api/usuario/deletar/13110449900
+DELETE http://localhost:5272/api/usuario/deletar/12345678

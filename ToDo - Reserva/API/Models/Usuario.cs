@@ -6,7 +6,7 @@ namespace API.Models;
 public class Usuario
 {
     [Key]
-    public string CPF { get; set; } // CPF continua como chave primária
+    public string CPF { get; set; } 
 
     public string NomeCompleto { get; set; }  
     public string? Email { get; set; }        

@@ -7,24 +7,23 @@ namespace API.Models;
 public class Reserva
 {
     [Key]
-    public int ReservaId { get; set; } // Chave primária
+    public int ReservaId { get; set; } 
 
-    // Chave estrangeira para o usuário que fez a reserva
+    
     [Required]
     [ForeignKey("Usuario")]
-    public string CPF { get; set; } // CPF do usuário que fez a reserva
+    public string CPF { get; set; } 
 
-    // Chave estrangeira para o veículo reservado
+   
     [Required]
     [ForeignKey("Veiculo")]
-    public string Placa { get; set; } // Placa do veículo reservado
+    public string Placa { get; set; } 
 
-    public DateTime DataReserva { get; set; } = DateTime.Now; // Data da reserva
-
-    // Adicionando as colunas para período de reserva
+    public DateTime DataReserva { get; set; } = DateTime.Now; 
+  
     [Required]
-    public DateTime PeriodoInicial { get; set; } // Data de início da reserva
+    public DateTime PeriodoInicial { get; set; } 
 
     [Required]
-    public DateTime PeriodoFinal { get; set; } // Data de término da reserva
+    public DateTime PeriodoFinal { get; set; } 
 }

@@ -6,7 +6,7 @@ namespace API.Models;
 public class Veiculo
 {
     [Key]
-    public string? Placa { get; set; } // Placa como chave primária
+    public string? Placa { get; set; } 
 
     public string Modelo { get; set; }  
     public string? Marca { get; set; }        
