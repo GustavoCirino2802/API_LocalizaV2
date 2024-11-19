@@ -17,6 +17,32 @@ namespace API.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
+            modelBuilder.Entity("API.Models.Pagamento", b =>
+                {
+                    b.Property<int>("PagamentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataPagamento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MetodoPagamento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PagamentoId");
+
+                    b.HasIndex("ReservaId");
+
+                    b.ToTable("Pagamentos");
+                });
+
             modelBuilder.Entity("API.Models.Reserva", b =>
                 {
                     b.Property<int>("ReservaId")
@@ -40,6 +66,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("StatusPagamento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ReservaId");
 
                     b.ToTable("Reservas");
@@ -51,9 +81,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Celular")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CriadoEm")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -80,9 +107,6 @@ namespace API.Migrations
                     b.Property<string>("Ano")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Disponivel")
                         .HasColumnType("TEXT");
 
@@ -96,6 +120,17 @@ namespace API.Migrations
                     b.HasKey("Placa");
 
                     b.ToTable("Veiculos");
+                });
+
+            modelBuilder.Entity("API.Models.Pagamento", b =>
+                {
+                    b.HasOne("API.Models.Reserva", "Reserva")
+                        .WithMany()
+                        .HasForeignKey("ReservaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reserva");
                 });
 #pragma warning restore 612, 618
         }

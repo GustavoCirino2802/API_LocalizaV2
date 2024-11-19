@@ -1,0 +1,14 @@
+### Realizar um pagamento
+POST http://localhost:5272/api/pagamento/realizar
+Content-Type: application/json
+
+{
+    "ReservaId": 4,
+    "ValorTotal": 1500.00,
+    "MetodoPagamento": "PIX"
+}
+
+### cancelar um pagamento pendente 
+DELETE http://localhost:5272/api/pagamento/cancelar/1
+
+

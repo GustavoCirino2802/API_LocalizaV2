@@ -9,15 +9,16 @@ public class Reserva
     [Key]
     public int ReservaId { get; set; } 
 
-    
     [Required]
     [ForeignKey("Usuario")]
-    public string CPF { get; set; } 
+    public string? CPF { get; set; } 
 
-   
     [Required]
     [ForeignKey("Veiculo")]
-    public string Placa { get; set; } 
+    public string? Placa { get; set; } 
+
+    [Required]
+    public string StatusPagamento { get; set; } = "Pendente";
 
     public DateTime DataReserva { get; set; } = DateTime.Now; 
   

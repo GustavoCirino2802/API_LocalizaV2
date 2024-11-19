@@ -11,14 +11,40 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20241019190856_AddReservaTable")]
-    partial class AddReservaTable
+    [Migration("20241119023928_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+
+            modelBuilder.Entity("API.Models.Pagamento", b =>
+                {
+                    b.Property<int>("PagamentoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DataPagamento")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MetodoPagamento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PagamentoId");
+
+                    b.HasIndex("ReservaId");
+
+                    b.ToTable("Pagamentos");
+                });
 
             modelBuilder.Entity("API.Models.Reserva", b =>
                 {
@@ -33,23 +59,21 @@ namespace API.Migrations
                     b.Property<DateTime>("DataReserva")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Modelo")
-                        .IsRequired()
+                    b.Property<DateTime>("PeriodoFinal")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NomeCompleto")
-                        .IsRequired()
+                    b.Property<DateTime>("PeriodoInicial")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Placa")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("StatusPagamento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ReservaId");
-
-                    b.HasIndex("CPF");
-
-                    b.HasIndex("Placa");
 
                     b.ToTable("Reservas");
                 });
@@ -60,9 +84,6 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Celular")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CriadoEm")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -89,9 +110,6 @@ namespace API.Migrations
                     b.Property<string>("Ano")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CriadoEm")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Disponivel")
                         .HasColumnType("TEXT");
 
@@ -107,23 +125,15 @@ namespace API.Migrations
                     b.ToTable("Veiculos");
                 });
 
-            modelBuilder.Entity("API.Models.Reserva", b =>
+            modelBuilder.Entity("API.Models.Pagamento", b =>
                 {
-                    b.HasOne("API.Models.Usuario", "Usuario")
+                    b.HasOne("API.Models.Reserva", "Reserva")
                         .WithMany()
-                        .HasForeignKey("CPF")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("ReservaId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.Veiculo", "Veiculo")
-                        .WithMany()
-                        .HasForeignKey("Placa")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-
-                    b.Navigation("Veiculo");
+                    b.Navigation("Reserva");
                 });
 #pragma warning restore 612, 618
         }

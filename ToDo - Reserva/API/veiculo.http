@@ -1,27 +1,12 @@
-### Testar a raiz do projeto 
-GET http://localhost:5272
-
 ### Cadastrar um veiculo
 POST http://localhost:5272/api/veiculo/cadastrar
 Content-Type: application/json
 
 {
     "Placa": "ABC123",
-    "Modelo": "Onix",
+    "Modelo": "Camaro",
     "Marca": "Chevrolet",
-    "Ano": "2020",
-    "Disponivel": "SIM"
-    
-}
-
-### Alterar informações de um veiculo (por Placa)
-PUT http://localhost:5272/api/veiculo/alterar/ABC123
-Content-Type: application/json
-
-{
-    "Modelo": "Cruze",
-    "Marca": "Chevrolet",
-    "Ano": "2024"
+    "Ano": "2025"
 }
 
 ### Listar todos os veiculos

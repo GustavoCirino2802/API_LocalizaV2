@@ -1,6 +1,3 @@
-### Testar a raiz do projeto 
-GET http://localhost:5272
-
 ### Cadastrar um usuário
 POST http://localhost:5272/api/usuario/cadastrar
 Content-Type: application/json
@@ -18,10 +15,9 @@ PUT http://localhost:5272/api/usuario/alterar/12345678
 Content-Type: application/json
 
 {
-    "NomeCompleto": "Gustavo",
-    "Celular": "Teste",
-    "Email": "Teste",
-    "Senha": "Teste"
+    "Celular": "87654321",
+    "Email": "diogo.novo@email.com",
+    "Senha": "123@novo"
 }
 
 ### Listar todos os usuários

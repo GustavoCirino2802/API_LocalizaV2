@@ -5,8 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>();
 var app = builder.Build();
 
-app.MapGet("/", () => "Projeto API_LocalizaV2!");
-
 ////////////////////////    RESERVA   /////////////////////////////////
 //////////////////////// CADASTRO DE RESERVAS /////////////////////////
 
@@ -18,13 +16,12 @@ app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,
     {
         return Results.BadRequest("Veículo não existe.");
     }
-    
+
     if (veiculo.Disponivel == "NÃO")
     {
         return Results.BadRequest("Veículo não disponível para reserva.");
     }
 
-    // Verifica se o usuário existe
     var usuario = ctx.Usuarios.Find(reserva.CPF); 
     if (usuario is null)
     {
@@ -34,8 +31,8 @@ app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva,
     ctx.Reservas.Add(reserva);
     veiculo.Disponivel = "NÃO"; 
     ctx.SaveChanges();
-    return Results.Created("", reserva);
-}); 
+    return Results.Created("", reserva); 
+});
 
 //////////////////////// LISTAR RESERVAS /////////////////////////
 
@@ -131,7 +128,6 @@ app.MapPut("/api/usuario/alterar/{cpf}", ([FromRoute] string cpf,
     {
         return Results.NotFound();
     }
-    usuario.NomeCompleto = usuarioAlterado.NomeCompleto;
     usuario.Celular = usuarioAlterado.Celular;
     usuario.Email = usuarioAlterado.Email;
     usuario.Senha = usuarioAlterado.Senha;
@@ -204,24 +200,62 @@ app.MapDelete("/api/veiculo/deletar/{placa}", ([FromRoute] string placa,
     return Results.Ok(veiculo);
 }); 
 
-//////////////////////// ALTERAR VEÍCULO /////////////////////////
+////////////////////////    PAGAMENTO   /////////////////////////////////
+//////////////////////// REALIZAR PAGAMENTO /////////////////////////////
 
-app.MapPut("/api/veiculo/alterar/{placa}", ([FromRoute] string placa, 
-    [FromBody] Veiculo veiculoAlterado,  
+app.MapPost("/api/pagamento/realizar", ([FromBody] Pagamento pagamento,  
     [FromServices] AppDataContext ctx) =>
 {
-    Veiculo? veiculo = ctx.Veiculos.Find(placa);
-    if(veiculo is null)
+    var reserva = ctx.Reservas.Find(pagamento.ReservaId);
+    if (reserva is null)
     {
-        return Results.NotFound();
+        return Results.BadRequest("Reserva não encontrada.");
     }
-    veiculo.Modelo = veiculoAlterado.Modelo;
-    veiculo.Marca = veiculoAlterado.Marca;
-    veiculo.Ano = veiculoAlterado.Ano;
-    
-    ctx.Veiculos.Update(veiculo);
+
+    if (reserva.StatusPagamento == "Pago")
+    {
+        return Results.BadRequest("Pagamento já realizado para esta reserva.");
+    }
+
+    reserva.StatusPagamento = "Pago";
+    ctx.Reservas.Update(reserva);
+
+    pagamento.DataPagamento = DateTime.Now;
+    ctx.Pagamentos.Add(pagamento);
+
     ctx.SaveChanges();
-    return Results.Ok(veiculo);
-}); 
+    return Results.Created("", pagamento);
+});
+
+//////////////////////// CANCELAR PAGAMENTO /////////////////////////////
+
+app.MapDelete("/api/pagamento/cancelar/{pagamentoId}", ([FromRoute] int pagamentoId,  
+    [FromServices] AppDataContext ctx) =>
+{
+    Pagamento? pagamento = ctx.Pagamentos.Find(pagamentoId);
+    if (pagamento is null)
+    {
+        return Results.NotFound("Pagamento não encontrado.");
+    }
+
+    var reserva = ctx.Reservas.Find(pagamento.ReservaId);
+    if (reserva is null)
+    {
+        return Results.BadRequest("Reserva não encontrada.");
+    }
+
+    if (reserva.StatusPagamento == "Pago")
+    {
+        return Results.BadRequest("Não é possível cancelar um pagamento já efetuado.");
+    }
+
+    ctx.Pagamentos.Remove(pagamento);
+    reserva.StatusPagamento = "Pendente";
+    ctx.Reservas.Update(reserva);
+
+    ctx.SaveChanges();
+    return Results.Ok("Pagamento cancelado com sucesso.");
+});
+
 
 app.Run();
