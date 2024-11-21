@@ -8,12 +8,12 @@ function VeiculoCadastrar() {
   const [marca, setMarca] = useState("");
   const [ano, setAno] = useState("");
   const [disponivel, setDisponivel] = useState("");
-  const [reservaId, setReservaId] = useState(0);
+  const [reservaId, setReservaId] = useState("");
   const [reservas, setReservas] = useState<any[]>([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5085/api/reserva/listar")
+      .get("http://localhost:5272/api/reserva/listar")
       .then((resposta) => {
         setReservas(resposta.data);
       })
@@ -29,12 +29,12 @@ function VeiculoCadastrar() {
       modelo: modelo,
       marca: marca,
       ano: ano,
-      disponivel: disponivel,
+      disponivel: disponivel === "true",
       reservaId: reservaId,
     };
 
     axios
-      .post("http://localhost:5085/api/veiculo/cadastrar", veiculo)
+      .post("http://localhost:5272/api/veiculo/cadastrar", veiculo)
       .then((resposta) => {
         console.log("Veículo cadastrado com sucesso:", resposta.data);
       })
@@ -93,7 +93,7 @@ function VeiculoCadastrar() {
           <label>Reserva:</label>
           <select
             value={reservaId}
-            onChange={(event) => setReservaId(Number(event.target.value))}
+            onChange={(event) => setReservaId(event.target.value)}
           >
             <option value="">Selecione uma reserva</option>
             {reservas.map((reserva) => (

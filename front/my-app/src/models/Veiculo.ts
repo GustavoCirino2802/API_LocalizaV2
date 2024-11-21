@@ -5,7 +5,7 @@ export interface Veiculo {
     modelo: string;
     marca: string;
     ano: string;
-    disponivel: string;
+    disponivel: boolean;
     reservaId: string;
     reserva?: Reserva;
 }
