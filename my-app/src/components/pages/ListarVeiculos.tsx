@@ -4,6 +4,7 @@ import { Veiculo } from '../../Models/Veiculo';
 
 const ListarVeiculos: React.FC = () => {
     const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
+    const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
 
     useEffect(() => {
         const fetchVeiculos = async () => {
@@ -12,7 +13,7 @@ const ListarVeiculos: React.FC = () => {
                 setVeiculos(response.data);
             } catch (error) {
                 console.error('Erro ao buscar veículos:', error);
-                alert('Erro ao carregar veículos disponíveis');
+                setMessage({ type: 'error', text: 'Erro ao carregar veículos disponíveis' });
             }
         };
 
@@ -20,32 +21,40 @@ const ListarVeiculos: React.FC = () => {
     }, []);
 
     return (
-        <div className="container mt-4">
-            <h2>Veículos Disponíveis</h2>
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Placa</th>
-                        <th>Modelo</th>
-                        <th>Marca</th>
-                        <th>Ano</th>
-                        <th>Disponível</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {veiculos.map((veiculo) => (
-                        <tr key={veiculo.placa}>
-                            <td>{veiculo.placa}</td>
-                            <td>{veiculo.modelo}</td>
-                            <td>{veiculo.marca}</td>
-                            <td>{veiculo.ano}</td>
-                            <td>{veiculo.disponivel}</td>
+        <div className="table-container">
+            <h2 className="form-title">Veículos Disponíveis</h2>
+            {message && (
+                <div className={`form-message ${message.type}`}>
+                    {message.text}
+                </div>
+            )}
+            {veiculos.length > 0 ? (
+                <table className="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Modelo</th>
+                            <th>Marca</th>
+                            <th>Ano</th>
+                            <th>Status</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            {veiculos.length === 0 && (
-                <p className="text-center">Nenhum veículo disponível no momento.</p>
+                    </thead>
+                    <tbody>
+                        {veiculos.map((veiculo) => (
+                            <tr key={veiculo.placa}>
+                                <td>{veiculo.placa}</td>
+                                <td>{veiculo.modelo}</td>
+                                <td>{veiculo.marca}</td>
+                                <td>{veiculo.ano}</td>
+                                <td>{veiculo.disponivel}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <div className="form-message">
+                    Nenhum veículo disponível no momento.
+                </div>
             )}
         </div>
     );

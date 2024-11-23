@@ -31,7 +31,16 @@ const CadastrarUsuario: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            console.log('Cadastrando novo usuário:', {
+                CPF: usuario.CPF,
+                NomeCompleto: usuario.NomeCompleto,
+                Celular: usuario.Celular,
+                Email: usuario.Email,
+                Senha: '******' // Por segurança, não exibimos a senha
+            });
+
             const response = await axios.post('http://localhost:5272/api/usuario/cadastrar', usuario);
+            console.log('Resposta do servidor:', response.data);
             setMessage({ type: 'success', text: 'Usuário cadastrado com sucesso!' });
             setUsuario({
                 CPF: '',
@@ -41,8 +50,8 @@ const CadastrarUsuario: React.FC = () => {
                 Senha: ''
             });
         } catch (error) {
+            console.error('Erro ao cadastrar usuário:', error);
             setMessage({ type: 'error', text: 'Erro ao cadastrar usuário' });
-            console.error('Erro:', error);
         }
     };
 

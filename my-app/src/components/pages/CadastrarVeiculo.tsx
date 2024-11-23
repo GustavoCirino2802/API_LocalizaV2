@@ -24,7 +24,16 @@ const CadastrarVeiculo: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            console.log('Cadastrando novo veículo:', {
+                placa: veiculo.placa,
+                modelo: veiculo.modelo,
+                marca: veiculo.marca,
+                ano: veiculo.ano,
+                disponivel: veiculo.disponivel
+            });
+
             const response = await axios.post('http://localhost:5272/api/veiculo/cadastrar', veiculo);
+            console.log('Resposta do servidor:', response.data);
             setMessage({ type: 'success', text: 'Veículo cadastrado com sucesso!' });
             setVeiculo({
                 placa: '',
@@ -34,8 +43,8 @@ const CadastrarVeiculo: React.FC = () => {
                 disponivel: 'SIM'
             });
         } catch (error) {
+            console.error('Erro ao cadastrar veículo:', error);
             setMessage({ type: 'error', text: 'Erro ao cadastrar veículo' });
-            console.error('Erro:', error);
         }
     };
 

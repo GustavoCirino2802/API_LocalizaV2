@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import CadastrarVeiculo from './components/pages/CadastrarVeiculo';
 import CadastrarUsuario from './components/pages/CadastrarUsuario';
 import ListarVeiculos from './components/pages/ListarVeiculos';
+import RealizarReserva from './components/pages/RealizarReserva';
 import './App.css';
 
 function App() {
@@ -15,11 +16,17 @@ function App() {
                             <li className="dropdown">
                                 <span className="nav-link">Cadastro</span>
                                 <ul className="dropdown-menu">
-                                    <li><Link to="/cadastro-usuario" className="nav-link">Cadastro Usuário</Link></li>
-                                    <li><Link to="/cadastro-veiculo" className="nav-link">Cadastro Veículo</Link></li>
+                                    <li><Link to="/api/usuario/cadastrar" className="nav-link">Cadastro Usuário</Link></li>
+                                    <li><Link to="/api/veiculo/cadastrar" className="nav-link">Cadastro Veículo</Link></li>
                                 </ul>
                             </li>
-                            <li><Link to="/veiculos" className="nav-link">Listar Veículos</Link></li>
+                            <li className="dropdown">
+                                <span className="nav-link">Reservas</span>
+                                <ul className="dropdown-menu">
+                                    <li><Link to="/api/reserva/cadastrar" className="nav-link">Realizar Reserva</Link></li>
+                                    <li><Link to="/api/veiculo/listarDisponiveis" className="nav-link">Veículos Disponíveis</Link></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav>
 
@@ -27,11 +34,15 @@ function App() {
                         <Route path="/" element={
                             <div className="home-container">
                                 <h1>BEM VINDO AO LOCALIZAV2</h1>
+                                <div className="home-content">
+                                    <p>Sistema de Locação de Veículos</p>
+                                </div>
                             </div>
                         } />
-                        <Route path="/cadastro-usuario" element={<CadastrarUsuario />} />
-                        <Route path="/cadastro-veiculo" element={<CadastrarVeiculo />} />
-                        <Route path="/veiculos" element={<ListarVeiculos />} />
+                        <Route path="/api/usuario/cadastrar" element={<CadastrarUsuario />} />
+                        <Route path="/api/veiculo/cadastrar" element={<CadastrarVeiculo />} />
+                        <Route path="/api/veiculo/listarDisponiveis" element={<ListarVeiculos />} />
+                        <Route path="/api/reserva/cadastrar" element={<RealizarReserva />} />
                     </Routes>
                 </div>
             </div>
