@@ -11,6 +11,8 @@ const CadastrarVeiculo: React.FC = () => {
         disponivel: 'SIM'
     });
 
+    const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setVeiculo(prev => ({
@@ -23,10 +25,7 @@ const CadastrarVeiculo: React.FC = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5272/api/veiculo/cadastrar', veiculo);
-            console.log('Veículo cadastrado:', veiculo);
-            console.log('Resposta do servidor:', response.data);
-            alert('Veículo cadastrado com sucesso!');
-            // Limpar o formulário
+            setMessage({ type: 'success', text: 'Veículo cadastrado com sucesso!' });
             setVeiculo({
                 placa: '',
                 modelo: '',
@@ -35,60 +34,67 @@ const CadastrarVeiculo: React.FC = () => {
                 disponivel: 'SIM'
             });
         } catch (error) {
-            alert('Erro ao cadastrar veículo');
+            setMessage({ type: 'error', text: 'Erro ao cadastrar veículo' });
             console.error('Erro:', error);
         }
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Cadastro de Veículo</h2>
+        <div className="form-container">
+            <h2 className="form-title">Cadastro de Veículo</h2>
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Placa:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="placa"
                         value={veiculo.placa}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Modelo:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="modelo"
                         value={veiculo.modelo}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Marca:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="marca"
                         value={veiculo.marca}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Ano:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="ano"
                         value={veiculo.ano}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Cadastrar</button>
+                <div className="button-container">
+                    <button type="submit" className="submit-button">Cadastrar Veículo</button>
+                </div>
+                {message && (
+                    <div className={`form-message ${message.type}`}>
+                        {message.text}
+                    </div>
+                )}
             </form>
         </div>
     );

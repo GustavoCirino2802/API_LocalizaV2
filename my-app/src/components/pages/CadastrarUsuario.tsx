@@ -18,6 +18,8 @@ const CadastrarUsuario: React.FC = () => {
         Senha: ''
     });
 
+    const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUsuario(prev => ({
@@ -30,10 +32,7 @@ const CadastrarUsuario: React.FC = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5272/api/usuario/cadastrar', usuario);
-            console.log('Usuário cadastrado:', usuario);
-            console.log('Resposta do servidor:', response.data);
-            alert('Usuário cadastrado com sucesso!');
-            // Limpar o formulário
+            setMessage({ type: 'success', text: 'Usuário cadastrado com sucesso!' });
             setUsuario({
                 CPF: '',
                 NomeCompleto: '',
@@ -42,74 +41,81 @@ const CadastrarUsuario: React.FC = () => {
                 Senha: ''
             });
         } catch (error) {
-            alert('Erro ao cadastrar usuário');
+            setMessage({ type: 'error', text: 'Erro ao cadastrar usuário' });
             console.error('Erro:', error);
         }
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Cadastro de Usuário</h2>
+        <div className="form-container">
+            <h2 className="form-title">Cadastro de Usuário</h2>
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">CPF:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="CPF"
                         value={usuario.CPF}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Nome Completo:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="NomeCompleto"
                         value={usuario.NomeCompleto}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Celular:</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-input"
                         name="Celular"
                         value={usuario.Celular}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Email:</label>
                     <input
                         type="email"
-                        className="form-control"
+                        className="form-input"
                         name="Email"
                         value={usuario.Email}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <div className="mb-3">
+                <div className="form-group">
                     <label className="form-label">Senha:</label>
                     <input
                         type="password"
-                        className="form-control"
+                        className="form-input"
                         name="Senha"
                         value={usuario.Senha}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Cadastrar</button>
+                <div className="button-container">
+                    <button type="submit" className="submit-button">Cadastrar Usuário</button>
+                </div>
+                {message && (
+                    <div className={`form-message ${message.type}`}>
+                        {message.text}
+                    </div>
+                )}
             </form>
         </div>
     );
 };
 
-export default CadastrarUsuario; 
+export default CadastrarUsuario;
