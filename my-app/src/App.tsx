@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import CadastrarVeiculo from './components/pages/CadastrarVeiculo';
+import './App.css';
+import CadastrarUsuario from './components/pages/CadastrarUsuario';
+import ListarVeiculos from './components/pages/ListarVeiculos';
 
-function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>Você clicou {count} vezes</p>
-      <button onClick={() => setCount(count + 1)}>Clique aqui</button>
-    </div>
-  );
+function App() {
+    return (
+       <div className='App'>
+        <div className="container">
+          <CadastrarUsuario />
+          <CadastrarVeiculo />
+          <ListarVeiculos />
+        </div>
+       </div>
+    );
 }
 
-export default Counter;
+export default App;
