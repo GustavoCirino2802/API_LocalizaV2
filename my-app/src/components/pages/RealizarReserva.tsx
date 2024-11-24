@@ -19,8 +19,6 @@ const RealizarReserva: React.FC = () => {
     const [valorTotal, setValorTotal] = useState<number>(0);
     const [quantidadeDias, setQuantidadeDias] = useState<number>(0);
     const [showPayment, setShowPayment] = useState<boolean>(false);
-    const [valorPago, setValorPago] = useState<string>('');
-    const [troco, setTroco] = useState<number>(0);
 
     useEffect(() => {
         const fetchVeiculos = async () => {
@@ -39,13 +37,6 @@ const RealizarReserva: React.FC = () => {
     useEffect(() => {
         calcularValorTotal();
     }, [reserva.periodoInicial, reserva.periodoFinal]);
-
-    useEffect(() => {
-        if (valorPago) {
-            const troco = parseFloat(valorPago) - valorTotal;
-            setTroco(troco >= 0 ? troco : 0);
-        }
-    }, [valorPago, valorTotal]);
 
     const calcularValorTotal = () => {
         if (reserva.periodoInicial && reserva.periodoFinal) {
@@ -76,16 +67,24 @@ const RealizarReserva: React.FC = () => {
     };
 
     const handlePayment = async () => {
-        if (!valorPago || parseFloat(valorPago) < valorTotal) {
-            setMessage({ type: 'error', text: 'Valor pago deve ser igual ou maior que o valor total' });
-            return;
-        }
-
         try {
-            const response = await axios.post('http://localhost:5272/api/reserva/cadastrar', reserva);
-            console.log('Resposta do servidor:', response.data);
-            setMessage({ type: 'success', text: 'Reserva realizada com sucesso!' });
+            // Primeiro, cadastrar a reserva
+            const reservaResponse = await axios.post('http://localhost:5272/api/reserva/cadastrar', reserva);
+            const reservaId = reservaResponse.data.reservaId; // Assumindo que a API retorna o ID da reserva
+
+            // Em seguida, cadastrar o pagamento
+            const pagamento = {
+                reservaId: reservaId,
+                valorTotal: valorTotal,
+                metodoPagamento: reserva.formaPagamento
+            };
+
+            await axios.post('http://localhost:5272/api/pagamento/realizar', pagamento);
+
+            setMessage({ type: 'success', text: 'Reserva e pagamento realizados com sucesso!' });
             setShowPayment(false);
+            
+            // Resetar os estados
             setReserva({
                 cpf: '',
                 placa: '',
@@ -95,18 +94,14 @@ const RealizarReserva: React.FC = () => {
             });
             setValorTotal(0);
             setQuantidadeDias(0);
-            setValorPago('');
-            setTroco(0);
         } catch (error) {
-            console.error('Erro ao realizar reserva:', error);
-            setMessage({ type: 'error', text: 'Erro ao realizar reserva' });
+            console.error('Erro ao realizar reserva/pagamento:', error);
+            setMessage({ type: 'error', text: 'Erro ao realizar reserva/pagamento' });
         }
     };
 
     const handleCancelPayment = () => {
         setShowPayment(false);
-        setValorPago('');
-        setTroco(0);
         setMessage(null);
     };
 
@@ -140,7 +135,7 @@ const RealizarReserva: React.FC = () => {
                             <option value="">Selecione um veículo</option>
                             {veiculosDisponiveis.map((veiculo) => (
                                 <option key={veiculo.placa} value={veiculo.placa}>
-                                    {veiculo.marca} {veiculo.modelo} - {veiculo.placa}
+                                    {veiculo.placa} - {veiculo.marca}/{veiculo.modelo} 
                                 </option>
                             ))}
                         </select>
@@ -204,26 +199,6 @@ const RealizarReserva: React.FC = () => {
                     <div className="payment-info">
                         <p>Forma de Pagamento: {reserva.formaPagamento}</p>
                         <p>Valor Total: R$ {valorTotal.toFixed(2)}</p>
-                        
-                        {reserva.formaPagamento === 'Dinheiro' && (
-                            <>
-                                <div className="form-group">
-                                    <label className="form-label">Valor Recebido:</label>
-                                    <input
-                                        type="number"
-                                        className="form-input"
-                                        value={valorPago}
-                                        onChange={(e) => setValorPago(e.target.value)}
-                                        min={valorTotal}
-                                        step="0.01"
-                                        required
-                                    />
-                                </div>
-                                {troco > 0 && (
-                                    <p className="troco">Troco: R$ {troco.toFixed(2)}</p>
-                                )}
-                            </>
-                        )}
                     </div>
                     <div className="button-container">
                         <button onClick={handlePayment} className="submit-button">
