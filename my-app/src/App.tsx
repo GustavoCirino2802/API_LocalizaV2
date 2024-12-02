@@ -37,6 +37,16 @@ function App() {
                                 <div className="home-content">
                                     <p>Sistema de Locação de Veículos</p>
                                     <p>Equipe: Bruno Somera, Giselle Marry, Bruno Alexandre, Gustavo Cirino</p>
+                                    <p> O sistema de reserva de veículos será uma aplicação web que permite aos usuários
+                                        buscar, reservar e gerenciar veículos disponíveis. Desenvolvido em C# com Minimal API e
+                                        React, o sistema utilizará o Entity Framework para interagir com um banco de dados SQLite. O
+                                        projeto contará com pelo menos quatro entidades, incluindo Veículo, Usuário e Reserva. A
+                                        entidade Veículo suportará operações de CRUD (criação, listagem, atualização e exclusão) e terá
+                                        relacionamentos com as reservas feitas pelos usuários. O sistema proporcionará uma experiência
+                                        dinâmica, permitindo que os usuários visualizem a lista de veículos disponíveis, realizem
+                                        reservas e cancelem reservas e alterem as reservas (dia de retirada e dia de entrega), garantindo
+                                        que os dados sejam utilizados de forma significativa
+                                    </p>
                                 </div>
                             </div>
                         } />
